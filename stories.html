@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>chroma blog · stories</title>
+  <!-- Font Awesome 6 (free) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(145deg, #f9f3e8 0%, #f0f1fa 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      color: #1e1e2f;
+    }
+
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: #ffe9e0; border-radius: 20px; }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(145deg, #ff7b89, #b56eff); border-radius: 20px; }
+
+    /* ===== HEADER / NAV ===== */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 6%;
+      background: rgba(255, 255, 255, 0.68);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
+      border-bottom: 3px solid #ffd6b0;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .logo {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #f65b5b, #d06eff, #4aa3ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.5px;
+    }
+    .logo i { color: #ff8555; background: none; -webkit-background-clip: unset; background-clip: unset; font-size: 1.8rem; margin-right: 6px; }
+
+    .nav-links {
+      display: flex;
+      gap: 2.2rem;
+      flex-wrap: wrap;
+      font-weight: 600;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: #2b2b4b;
+      font-size: 1.1rem;
+      transition: 0.2s;
+      border-bottom: 2px solid transparent;
+      padding-bottom: 4px;
+    }
+    .nav-links a:hover, .nav-links a.active {
+      border-bottom-color: #ff784b;
+      color: #ff5c5c;
+    }
+    .nav-links a.active {
+      border-bottom-color: #ff784b;
+      color: #ff5c5c;
+    }
+    .search-box {
+      background: white;
+      padding: 0.4rem 1rem;
+      border-radius: 60px;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.02);
+      border: 1px solid #ffe4d4;
+    }
+    .search-box i { color: #a07bff; margin-right: 6px; }
+    .search-box input {
+      border: none;
+      background: transparent;
+      outline: none;
+      width: 160px;
+      font-size: 1rem;
+    }
+    .search-box input::placeholder { color: #b2a7d0; font-style: italic; }
+
+    /* ===== STORIES HERO ===== */
+    .stories-hero {
+      background: linear-gradient(112deg, #ffdbb5, #c7b0ff, #b7dcff);
+      padding: 3rem 6%;
+      margin: 2rem 6% 1rem;
+      border-radius: 48px;
+      box-shadow: 0 22px 35px -10px rgba(159, 105, 255, 0.25);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      border: 2px solid rgba(255,255,240,0.7);
+    }
+    .stories-hero h1 {
+      font-size: 3.2rem;
+      font-weight: 800;
+      background: linear-gradient(145deg, #2f0b5e, #c43a8b);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .stories-hero p {
+      font-size: 1.2rem;
+      max-width: 550px;
+      margin: 1.5rem 0 0;
+      color: #2a193b;
+      font-weight: 500;
+    }
+    .story-badge {
+      background: rgba(255,255,255,0.5);
+      backdrop-filter: blur(4px);
+      padding: 1rem 2rem;
+      border-radius: 100px;
+      font-size: 2rem;
+    }
+
+    /* ===== FILTER PILLS ===== */
+    .filter-section {
+      margin: 2rem 6% 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+    }
+    .filter-pill {
+      background: white;
+      padding: 0.7rem 1.8rem;
+      border-radius: 60px;
+      font-weight: 600;
+      color: #3d2b5c;
+      border: 2px solid #ffd1b9;
+      cursor: pointer;
+      transition: 0.2s;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+    }
+    .filter-pill:hover, .filter-pill.active {
+      background: #ffcab3;
+      border-color: #ff6f61;
+      color: #2b0f42;
+    }
+    .filter-pill i { margin-right: 8px; color: #aa70ff; }
+
+    /* ===== FEATURED STORY CARD (wide) ===== */
+    .featured-story {
+      margin: 2rem 6% 3rem;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      border-radius: 48px;
+      padding: 2.5rem;
+      border: 2px solid #ffc9b0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2.5rem;
+      align-items: center;
+    }
+    .featured-content {
+      flex: 2;
+      min-width: 280px;
+    }
+    .featured-label {
+      background: #ff7b5c;
+      color: white;
+      padding: 0.3rem 1.2rem;
+      border-radius: 40px;
+      display: inline-block;
+      font-weight: 700;
+      letter-spacing: 1px;
+      font-size: 0.9rem;
+    }
+    .featured-content h2 {
+      font-size: 2.8rem;
+      margin: 1rem 0 0.5rem;
+      color: #1b1b3a;
+    }
+    .featured-meta {
+      display: flex;
+      gap: 2rem;
+      color: #6f5b9b;
+      margin: 1rem 0 1.5rem;
+    }
+    .featured-meta i { margin-right: 6px; color: #f86f5e; }
+    .featured-content p {
+      font-size: 1.2rem;
+      color: #33334e;
+      margin-bottom: 2rem;
+    }
+    .author-chip {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .author-avatar {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(145deg, #f7a68b, #b881ff);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 1.4rem;
+    }
+    .featured-illustration {
+      flex: 1;
+      background: linear-gradient(135deg, #ffdbb5, #c1a2ff);
+      border-radius: 38px;
+      padding: 2rem;
+      text-align: center;
+      font-size: 4rem;
+      border: 3px solid white;
+    }
+
+    /* ===== STORIES GRID ===== */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin: 3rem 6% 1.5rem;
+    }
+    .section-header h2 {
+      font-size: 2.2rem;
+      background: linear-gradient(145deg, #b43f8c, #5445ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .section-header a {
+      color: #ff6f61;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .stories-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin: 0 6% 3rem;
+    }
+
+    .story-card {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      border-radius: 36px;
+      padding: 1.8rem 1.5rem;
+      box-shadow: 0 30px 40px -20px rgba(127, 79, 221, 0.3);
+      transition: 0.25s ease;
+      border: 2px solid rgba(255, 215, 245, 0.6);
+    }
+    .story-card:hover {
+      transform: translateY(-8px);
+      border-color: #ffad9a;
+    }
+    .card-category {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      background: #ffedd1;
+      padding: 0.3rem 1rem;
+      border-radius: 40px;
+      display: inline-block;
+      font-weight: 700;
+      color: #ac4b9b;
+    }
+    .story-card h3 {
+      font-size: 1.8rem;
+      margin: 0.7rem 0 0.5rem;
+      font-weight: 800;
+      color: #1b1b3a;
+    }
+    .story-card .meta {
+      color: #6f5b9b;
+      margin: 0.8rem 0;
+    }
+    .story-card .meta i { margin-right: 5px; color: #ff784b; }
+    .story-card p {
+      color: #33334e;
+      margin: 1rem 0;
+    }
+    .story-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1.5rem;
+    }
+    .mini-avatar {
+      width: 32px;
+      height: 32px;
+      background: #cbb2ff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: white;
+    }
+
+    /* ===== AUTHORS SPOTLIGHT ===== */
+    .authors-showcase {
+      margin: 3rem 6%;
+      background: #dad0ff7c;
+      backdrop-filter: blur(4px);
+      border-radius: 58px;
+      padding: 2.5rem 3rem;
+      border: 2px solid #ffdbbf;
+    }
+    .authors-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2.5rem;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+    .author-card {
+      background: white;
+      padding: 1.8rem 2rem;
+      border-radius: 48px;
+      text-align: center;
+      min-width: 160px;
+      border: 3px solid #ffb89c;
+    }
+    .author-avatar-large {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(145deg, #ffa07a, #aa7eff);
+      margin: 0 auto 1rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      color: white;
+    }
+
+    /* ===== NEWSLETTER ===== */
+    .newsletter-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin: 2rem 6% 3rem;
+      background: rgba(208, 188, 255, 0.25);
+      backdrop-filter: blur(4px);
+      border-radius: 56px;
+      padding: 2.5rem 3rem;
+      border: 2px solid #ffead2;
+    }
+    .input-group {
+      display: flex;
+      flex-wrap: wrap;
+      background: white;
+      border-radius: 60px;
+      align-items: center;
+      padding: 0.2rem 0.2rem 0.2rem 1.5rem;
+      border: 2px solid #fecdac;
+    }
+    .input-group i { color: #a06eff; font-size: 1.2rem; }
+    .input-group input {
+      flex: 1;
+      padding: 0.9rem 0.8rem;
+      border: none;
+      outline: none;
+      font-size: 1rem;
+      background: transparent;
+    }
+    .input-group button {
+      background: linear-gradient(130deg, #ff8a7a, #c46eff);
+      border: none;
+      padding: 0.8rem 2rem;
+      border-radius: 60px;
+      font-weight: 700;
+      color: white;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: 0.2s;
+      border: 2px solid white;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      margin-top: 2rem;
+      background: #20203a;
+      color: #f2d9ff;
+      padding: 2rem 6%;
+      border-radius: 48px 48px 0 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer a { color: #ffcba4; margin: 0 8px; font-size: 1.5rem; }
+
+    @media (max-width: 650px) {
+      .stories-hero { flex-direction: column; text-align: center; }
+      .navbar { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="logo"><i class="fas fa-blog"></i> chroma<span style="color:#ff8555;">log</span></div>
+      <div class="nav-links">
+        <a href="index.html">home</a>
+        <a href="/stories.html" class="active">stories</a>
+        <a href="/design.html">design</a>
+        <a href="/tech.html">tech</a>
+        <a href="/about.html">about</a>
+      </div>
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="search stories..." id="searchStories">
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Stories Hero -->
+    <section class="stories-hero">
+      <div>
+        <h1>longreads &<br>colorful tales</h1>
+        <p>Immerse yourself in narrative design, personal essays, and deep dives.</p>
+      </div>
+      <div class="story-badge">
+        <i class="fas fa-feather"></i> 42 stories
+      </div>
+    </section>
+
+    <!-- filter pills (interactive) -->
+    <div class="filter-section" id="filterContainer">
+      <span class="filter-pill active" data-filter="all"><i class="fas fa-compass"></i> all stories</span>
+      <span class="filter-pill" data-filter="personal"><i class="fas fa-user"></i> personal</span>
+      <span class="filter-pill" data-filter="travel"><i class="fas fa-plane"></i> travel</span>
+      <span class="filter-pill" data-filter="ideas"><i class="fas fa-lightbulb"></i> ideas</span>
+      <span class="filter-pill" data-filter="interview"><i class="fas fa-microphone"></i> interview</span>
+    </div>
+
+    <!-- Featured story (static highlight) -->
+    <div class="featured-story">
+      <div class="featured-content">
+        <span class="featured-label"><i class="fas fa-star"></i> featured story</span>
+        <h2>The chroma chronicles</h2>
+        <div class="featured-meta">
+          <span><i class="fas fa-pen"></i> by Mira Chen</span>
+          <span><i class="fas fa-clock"></i> 18 min read</span>
+        </div>
+        <p>How a small blog turned into a global community of colorful storytellers — and the lessons learned along the way.</p>
+        <div class="author-chip">
+          <div class="author-avatar">MC</div>
+          <div><strong>Mira Chen</strong> · editor in chief</div>
+        </div>
+      </div>
+      <div class="featured-illustration">
+        <i class="fas fa-book-open"></i><br>
+        <span style="font-size:1.4rem;">✨✨</span>
+      </div>
+    </div>
+
+    <!-- more stories header -->
+    <div class="section-header">
+      <h2><i class="fas fa-water"></i> recent narratives</h2>
+      <a href="#">view all <i class="fas fa-arrow-right"></i></a>
+    </div>
+
+    <!-- dynamic stories grid (populated by js) -->
+    <div class="stories-grid" id="storiesGrid"></div>
+
+    <!-- authors spotlight -->
+    <div class="authors-showcase">
+      <h2 style="color:#321b57;"><i class="fas fa-crown"></i> our storytellers</h2>
+      <div class="authors-grid">
+        <div class="author-card">
+          <div class="author-avatar-large">JD</div>
+          <h3>Jessie Dai</h3>
+          <p style="color:#9a6aff;">design & culture</p>
+        </div>
+        <div class="author-card">
+          <div class="author-avatar-large">MK</div>
+          <h3>Marcus K.</h3>
+          <p style="color:#ff6f61;">tech & society</p>
+        </div>
+        <div class="author-card">
+          <div class="author-avatar-large">SL</div>
+          <h3>Sofia Lima</h3>
+          <p style="color:#b56eff;">travel stories</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- newsletter -->
+    <div class="newsletter-row">
+      <div style="flex:2;">
+        <h2 style="font-size:2rem;"><i class="fas fa-envelope-open-text"></i> Sunday spark</h2>
+        <p>get colorful reads + free wallpapers</p>
+        <div class="input-group">
+          <i class="fas fa-heart"></i>
+          <input type="email" placeholder="your email" id="newsEmail">
+          <button id="subscribeBtn"><i class="fas fa-paper-plane"></i> subscribe</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <span>© 2025 chromalog — stories page</span>
+    <span>
+      <a href="#"><i class="fab fa-twitter"></i></a>
+      <a href="#"><i class="fab fa-github"></i></a>
+      <a href="#"><i class="fab fa-dribbble"></i></a>
+    </span>
+  </footer>
+
+  <script>
+    (function() {
+      // ----- STORIES DATA -----
+      const stories = [
+        {
+          id: 1,
+          title: "Painting with code",
+          category: "ideas",
+          author: "Alex Rivera",
+          date: "May 10, 2025",
+          readTime: "7 min",
+          excerpt: "When CSS meets watercolor: a developer's journey into creative coding.",
+          authorInitial: "AR",
+          filterTag: "ideas"
+        },
+        {
+          id: 2,
+          title: "Kyoto slow travel",
+          category: "travel",
+          author: "Sofia Lima",
+          date: "May 5, 2025",
+          readTime: "12 min",
+          excerpt: "Temples, tea, and the art of wandering without a map.",
+          authorInitial: "SL",
+          filterTag: "travel"
+        },
+        {
+          id: 3,
+          title: "The empathy interviews",
+          category: "interview",
+          author: "Marcus K.",
+          date: "April 28, 2025",
+          readTime: "15 min",
+          excerpt: "Conversations with designers who put humanity first.",
+          authorInitial: "MK",
+          filterTag: "interview"
+        },
+        {
+          id: 4,
+          title: "Finding your creative voice",
+          category: "personal",
+          author: "Jessie Dai",
+          date: "April 20, 2025",
+          readTime: "9 min",
+          excerpt: "Overcoming the blank page and embracing messy starts.",
+          authorInitial: "JD",
+          filterTag: "personal"
+        },
+        {
+          id: 5,
+          title: "Digital nomad notebooks",
+          category: "travel",
+          author: "Sofia Lima",
+          date: "April 15, 2025",
+          readTime: "11 min",
+          excerpt: "How working from 7 countries reshaped my perspective.",
+          authorInitial: "SL",
+          filterTag: "travel"
+        },
+        {
+          id: 6,
+          title: "Why we still need blogs",
+          category: "ideas",
+          author: "Mira Chen",
+          date: "April 8, 2025",
+          readTime: "6 min",
+          excerpt: "In the age of AI, personal blogs feel like handmade houses.",
+          authorInitial: "MC",
+          filterTag: "ideas"
+        }
+      ];
+
+      const grid = document.getElementById('storiesGrid');
+      const filterContainer = document.getElementById('filterContainer');
+      const filterPills = document.querySelectorAll('.filter-pill');
+      let activeFilter = 'all';
+
+      function renderStories(filter = 'all') {
+        let html = '';
+        const filtered = filter === 'all' ? stories : stories.filter(s => s.filterTag === filter);
+        
+        if (filtered.length === 0) {
+          html = '<div style="grid-column:1/-1; text-align:center; padding:3rem; background:rgba(255,255,255,0.5); border-radius:48px;">✨ no stories match this filter — but more coming soon.</div>';
+        } else {
+          filtered.forEach(s => {
+            html += `
+              <div class="story-card" data-category="${s.filterTag}">
+                <span class="card-category"><i class="fas fa-tag"></i> ${s.category}</span>
+                <h3>${s.title}</h3>
+                <div class="meta">
+                  <span><i class="far fa-calendar"></i> ${s.date}</span>
+                  <span><i class="far fa-clock"></i> ${s.readTime}</span>
+                </div>
+                <p>${s.excerpt}</p>
+                <div class="story-footer">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <div class="mini-avatar">${s.authorInitial}</div>
+                    <span>${s.author}</span>
+                  </div>
+                  <span style="color:#ff7b5c;"><i class="fa-regular fa-bookmark"></i></span>
+                </div>
+              </div>
+            `;
+          });
+        }
+        grid.innerHTML = html;
+      }
+
+      // initial render
+      renderStories('all');
+
+      // filter click handlers
+      filterPills.forEach(pill => {
+        pill.addEventListener('click', function() {
+          filterPills.forEach(p => p.classList.remove('active'));
+          this.classList.add('active');
+          const filter = this.dataset.filter;
+          activeFilter = filter;
+          renderStories(filter);
+        });
+      });
+
+      // search functionality (filter by title/author)
+      const searchInput = document.getElementById('searchStories');
+      searchInput.addEventListener('keyup', function() {
+        const term = this.value.toLowerCase().trim();
+        // we'll filter the already rendered cards (quick demo)
+        const cards = document.querySelectorAll('.story-card');
+        cards.forEach(card => {
+          const title = card.querySelector('h3')?.innerText.toLowerCase() || '';
+          const author = card.querySelector('.story-footer span:last-child')?.innerText.toLowerCase() || '';
+          if (title.includes(term) || author.includes(term) || term === '') {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+        // if search active, we might also hide "no stories" div but it's fine.
+      });
+
+      // newsletter subscribe
+      document.getElementById('subscribeBtn').addEventListener('click', function() {
+        const email = document.getElementById('newsEmail').value;
+        if (email.includes('@') && email.includes('.')) {
+          alert(`🌈 Thanks! A welcome email sent to ${email} (demo).`);
+          document.getElementById('newsEmail').value = '';
+        } else {
+          alert('✨ please enter a valid email (demo).');
+        }
+      });
+
+      // optional: bookmark simulation
+      document.addEventListener('click', function(e) {
+        const bookmark = e.target.closest('.fa-bookmark');
+        if (bookmark) {
+          e.preventDefault();
+          if (bookmark.classList.contains('fa-regular')) {
+            bookmark.classList.remove('fa-regular');
+            bookmark.classList.add('fa-solid');
+            bookmark.style.color = '#ff6f61';
+          } else {
+            bookmark.classList.remove('fa-solid');
+            bookmark.classList.add('fa-regular');
+            bookmark.style.color = '';
+          }
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
