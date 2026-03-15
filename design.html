@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>chroma blog · design</title>
+  <!-- Font Awesome 6 (free) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(145deg, #f9f3e8 0%, #f0f1fa 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      color: #1e1e2f;
+    }
+
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: #ffe9e0; border-radius: 20px; }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(145deg, #ff7b89, #b56eff); border-radius: 20px; }
+
+    /* ===== HEADER / NAV ===== */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 6%;
+      background: rgba(255, 255, 255, 0.68);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
+      border-bottom: 3px solid #ffd6b0;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .logo {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #f65b5b, #d06eff, #4aa3ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.5px;
+    }
+    .logo i { color: #ff8555; background: none; -webkit-background-clip: unset; background-clip: unset; font-size: 1.8rem; margin-right: 6px; }
+
+    .nav-links {
+      display: flex;
+      gap: 2.2rem;
+      flex-wrap: wrap;
+      font-weight: 600;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: #2b2b4b;
+      font-size: 1.1rem;
+      transition: 0.2s;
+      border-bottom: 2px solid transparent;
+      padding-bottom: 4px;
+    }
+    .nav-links a:hover, .nav-links a.active {
+      border-bottom-color: #ff784b;
+      color: #ff5c5c;
+    }
+    .nav-links a.active {
+      border-bottom-color: #ff784b;
+      color: #ff5c5c;
+    }
+    .search-box {
+      background: white;
+      padding: 0.4rem 1rem;
+      border-radius: 60px;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.02);
+      border: 1px solid #ffe4d4;
+    }
+    .search-box i { color: #a07bff; margin-right: 6px; }
+    .search-box input {
+      border: none;
+      background: transparent;
+      outline: none;
+      width: 160px;
+      font-size: 1rem;
+    }
+    .search-box input::placeholder { color: #b2a7d0; font-style: italic; }
+
+    /* ===== DESIGN HERO ===== */
+    .design-hero {
+      background: linear-gradient(112deg, #ffc8dd, #b8e0ff, #d0bbff);
+      padding: 3.5rem 6%;
+      margin: 2rem 6% 1rem;
+      border-radius: 48px;
+      box-shadow: 0 22px 35px -10px rgba(159, 105, 255, 0.25);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      border: 2px solid rgba(255,255,240,0.7);
+    }
+    .design-hero h1 {
+      font-size: 3.2rem;
+      font-weight: 800;
+      background: linear-gradient(145deg, #3b1d5e, #d5438b);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .design-hero p {
+      font-size: 1.2rem;
+      max-width: 550px;
+      margin: 1.5rem 0 0;
+      color: #2a193b;
+      font-weight: 500;
+    }
+    .hero-icon-palette {
+      background: rgba(255,255,255,0.5);
+      backdrop-filter: blur(4px);
+      padding: 1rem 2rem;
+      border-radius: 100px;
+      font-size: 3rem;
+    }
+
+    /* ===== DESIGN TOOLBAR (inspiration categories) ===== */
+    .inspire-tabs {
+      margin: 2rem 6% 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      align-items: center;
+    }
+    .tab-pill {
+      background: white;
+      padding: 0.7rem 1.8rem;
+      border-radius: 60px;
+      font-weight: 600;
+      color: #3d2b5c;
+      border: 2px solid #ffd1b9;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .tab-pill:hover, .tab-pill.active {
+      background: #d2b0ff;
+      border-color: #a16eff;
+      color: #1e1035;
+    }
+    .tab-pill i { margin-right: 8px; }
+
+    /* ===== COLOR PALETTE SHOWCASE ===== */
+    .palette-section {
+      margin: 2rem 6% 3rem;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(8px);
+      border-radius: 58px;
+      padding: 2.5rem 3rem;
+      border: 2px solid #ffe0cc;
+    }
+    .palette-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: center;
+      margin: 2rem 0;
+    }
+    .color-swatch {
+      width: 130px;
+      height: 130px;
+      border-radius: 38px;
+      display: flex;
+      flex-direction: column;
+      justify-content: end;
+      padding: 1rem;
+      color: white;
+      font-weight: 600;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      border: 3px solid white;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    .swatch-1 { background: #ff6b6b; }
+    .swatch-2 { background: #feca57; }
+    .swatch-3 { background: #48dbfb; }
+    .swatch-4 { background: #ff9ff3; }
+    .swatch-5 { background: #1dd1a1; }
+    .swatch-6 { background: #5f27cd; }
+
+    /* ===== DESIGN ARTICLES GRID ===== */
+    .design-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin: 1rem 6% 3rem;
+    }
+
+    .design-card {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      border-radius: 36px;
+      padding: 1.8rem 1.5rem;
+      box-shadow: 0 30px 40px -20px rgba(127, 79, 221, 0.3);
+      transition: 0.25s ease;
+      border: 2px solid rgba(255, 215, 245, 0.6);
+    }
+    .design-card:hover {
+      transform: translateY(-8px);
+      border-color: #ffad9a;
+    }
+    .card-badge {
+      font-size: 0.85rem;
+      background: #e0d5ff;
+      padding: 0.3rem 1rem;
+      border-radius: 40px;
+      display: inline-block;
+      font-weight: 700;
+      color: #5d3a9c;
+    }
+    .design-card h3 {
+      font-size: 1.9rem;
+      margin: 0.7rem 0 0.5rem;
+      font-weight: 800;
+      color: #1b1b3a;
+    }
+    .design-meta {
+      color: #6f5b9b;
+      margin: 0.8rem 0;
+    }
+    .design-meta i { color: #ff784b; margin-right: 4px; }
+    .design-card p {
+      color: #33334e;
+      margin: 1rem 0 1.5rem;
+    }
+    .design-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .tool-tag {
+      background: #fff0e6;
+      padding: 0.3rem 1rem;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #ad64c0;
+    }
+
+    /* ===== RESOURCES / TOOLS SECTION ===== */
+    .resources-section {
+      margin: 3rem 6%;
+      background: #dcc9ff6b;
+      backdrop-filter: blur(4px);
+      border-radius: 58px;
+      padding: 2.5rem 3rem;
+      border: 2px solid #ffdbbf;
+    }
+    .tools-flex {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+    .tool-item {
+      background: white;
+      padding: 1.8rem 2.2rem;
+      border-radius: 48px;
+      text-align: center;
+      min-width: 160px;
+      border: 3px solid #ffb89c;
+      flex: 1 0 140px;
+    }
+    .tool-item i {
+      font-size: 2.5rem;
+      color: #7c5cff;
+      margin-bottom: 0.8rem;
+    }
+
+    /* ===== INSPIRATION GALLERY (simple mosaic) ===== */
+    .gallery-section {
+      margin: 2rem 6% 3rem;
+    }
+    .gallery-mosaic {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1.2rem;
+      margin-top: 1.5rem;
+    }
+    .gallery-item {
+      background: linear-gradient(145deg, #fab9b9, #cbb2ff);
+      border-radius: 28px;
+      padding: 2rem 1rem;
+      text-align: center;
+      font-size: 2rem;
+      border: 3px solid white;
+      box-shadow: 0 10px 16px #c5a3ff4d;
+    }
+
+    /* ===== NEWSLETTER ===== */
+    .newsletter-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin: 2rem 6% 3rem;
+      background: rgba(208, 188, 255, 0.25);
+      backdrop-filter: blur(4px);
+      border-radius: 56px;
+      padding: 2.5rem 3rem;
+      border: 2px solid #ffead2;
+    }
+    .input-group {
+      display: flex;
+      flex-wrap: wrap;
+      background: white;
+      border-radius: 60px;
+      align-items: center;
+      padding: 0.2rem 0.2rem 0.2rem 1.5rem;
+      border: 2px solid #fecdac;
+    }
+    .input-group button {
+      background: linear-gradient(130deg, #ff8a7a, #c46eff);
+      border: none;
+      padding: 0.8rem 2rem;
+      border-radius: 60px;
+      font-weight: 700;
+      color: white;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      margin-top: 2rem;
+      background: #20203a;
+      color: #f2d9ff;
+      padding: 2rem 6%;
+      border-radius: 48px 48px 0 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer a { color: #ffcba4; margin: 0 8px; font-size: 1.5rem; }
+
+    @media (max-width: 650px) {
+      .design-hero { flex-direction: column; text-align: center; }
+      .navbar { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="logo"><i class="fas fa-blog"></i> chroma<span style="color:#ff8555;">log</span></div>
+      <div class="nav-links">
+        <a href="index.html">home</a>
+        <a href="stories.html">stories</a>
+        <a href="design.html" class="active">design</a>
+        <a href="tech.html">tech</a>
+        <a href="about.html">about</a>
+      </div>
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="search design..." id="searchDesign">
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Design Hero -->
+    <section class="design-hero">
+      <div>
+        <h1>design desk<br>& color lab</h1>
+        <p>UI patterns, color theory, Figma tips, and daily inspiration.</p>
+      </div>
+      <div class="hero-icon-palette">
+        <i class="fas fa-palette"></i> <i class="fas fa-pen-ruler"></i>
+      </div>
+    </section>
+
+    <!-- filter / tab navigation for design topics -->
+    <div class="inspire-tabs" id="designTabs">
+      <span class="tab-pill active" data-tab="all"><i class="fas fa-compass"></i> all</span>
+      <span class="tab-pill" data-tab="ui"><i class="fas fa-mobile-alt"></i> UI/UX</span>
+      <span class="tab-pill" data-tab="color"><i class="fas fa-droplet"></i> color</span>
+      <span class="tab-pill" data-tab="tools"><i class="fas fa-wrench"></i> tools</span>
+      <span class="tab-pill" data-tab="inspo"><i class="fas fa-star"></i> inspiration</span>
+    </div>
+
+    <!-- featured palette interactive swatch section -->
+    <div class="palette-section">
+      <h2 style="color:#2f1c4b;"><i class="fas fa-swatchbook"></i> trending palette · "neon nostalgia"</h2>
+      <div class="palette-grid">
+        <div class="color-swatch swatch-1">#FF6B6B</div>
+        <div class="color-swatch swatch-2">#FECA57</div>
+        <div class="color-swatch swatch-3">#48DBFB</div>
+        <div class="color-swatch swatch-4">#FF9FF3</div>
+        <div class="color-swatch swatch-5">#1DD1A1</div>
+        <div class="color-swatch swatch-6">#5F27CD</div>
+      </div>
+      <p style="text-align:center;"><i class="fas fa-mouse-pointer"></i> click any swatch to copy hex (demo)</p>
+    </div>
+
+    <!-- design articles grid (dynamic) -->
+    <h2 style="margin: 0 6% 1rem; font-size:2rem; background: linear-gradient(145deg, #b43f8c, #5445ff); -webkit-background-clip: text; background-clip: text; color: transparent;"><i class="fas fa-pen-fancy"></i> latest design reads</h2>
+    <div class="design-grid" id="designGrid"></div>
+
+    <!-- tools & resources -->
+    <div class="resources-section">
+      <h2 style="color:#321b57;"><i class="fas fa-toolbox"></i> favorite design tools</h2>
+      <div class="tools-flex">
+        <div class="tool-item"><i class="fas fa-paint-brush"></i> <strong>Figma</strong></div>
+        <div class="tool-item"><i class="fas fa-palette"></i> <strong>Coolors</strong></div>
+        <div class="tool-item"><i class="fas fa-font"></i> <strong>Fontjoy</strong></div>
+        <div class="tool-item"><i class="fas fa-layer-group"></i> <strong>Unsplash</strong></div>
+      </div>
+    </div>
+
+    <!-- inspiration gallery -->
+    <div class="gallery-section">
+      <h2 style="color:#321b57; margin-bottom:0.5rem;"><i class="fas fa-camera-retro"></i> daily moodboard</h2>
+      <div class="gallery-mosaic">
+        <div class="gallery-item">🎨</div>
+        <div class="gallery-item">🌈</div>
+        <div class="gallery-item">✨</div>
+        <div class="gallery-item">🖌️</div>
+        <div class="gallery-item">🧩</div>
+        <div class="gallery-item">🪄</div>
+      </div>
+    </div>
+
+    <!-- newsletter -->
+    <div class="newsletter-row">
+      <div style="flex:2;">
+        <h2 style="font-size:2rem;"><i class="fas fa-envelope-open-text"></i> design digest</h2>
+        <p>weekly color palettes + design resources</p>
+        <div class="input-group">
+          <i class="fas fa-heart" style="margin-left:1rem; color:#a06eff;"></i>
+          <input type="email" placeholder="your email" id="newsEmail" style="border:none; padding:0.9rem; flex:1; outline:none; background:transparent;">
+          <button id="subscribeBtn"><i class="fas fa-paper-plane"></i> subscribe</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <span>© 2025 chromalog — design inspiration</span>
+    <span>
+      <a href="#"><i class="fab fa-twitter"></i></a>
+      <a href="#"><i class="fab fa-github"></i></a>
+      <a href="#"><i class="fab fa-dribbble"></i></a>
+    </span>
+  </footer>
+
+  <script>
+    (function() {
+      // ----- DESIGN ARTICLES DATA -----
+      const designPosts = [
+        {
+          title: "Glassmorphism deep dive",
+          category: "ui",
+          readTime: "6 min",
+          description: "Frosted surfaces, backdrop blur, and layered depth.",
+          tags: ["Figma", "CSS"],
+          tab: "ui"
+        },
+        {
+          title: "Color psychology 2025",
+          category: "color",
+          readTime: "8 min",
+          description: "How neon pastels and digital lavender affect mood.",
+          tags: ["trends", "theory"],
+          tab: "color"
+        },
+        {
+          title: "5 Figma plugins I use daily",
+          category: "tools",
+          readTime: "4 min",
+          description: "Streamline your workflow with these hidden gems.",
+          tags: ["Figma", "productivity"],
+          tab: "tools"
+        },
+        {
+          title: "Brutalism in web design",
+          category: "inspo",
+          readTime: "7 min",
+          description: "Raw, unpolished, and surprisingly charming.",
+          tags: ["inspiration", "CSS"],
+          tab: "inspo"
+        },
+        {
+          title: "Accessible color contrast",
+          category: "color",
+          readTime: "9 min",
+          description: "Make your designs vibrant yet inclusive.",
+          tags: ["a11y", "color"],
+          tab: "color"
+        },
+        {
+          title: "Micro-interactions that delight",
+          category: "ui",
+          readTime: "5 min",
+          description: "Small animations, big impact.",
+          tags: ["UI", "motion"],
+          tab: "ui"
+        }
+      ];
+
+      const grid = document.getElementById('designGrid');
+      const tabs = document.querySelectorAll('.tab-pill');
+      
+      function renderDesignPosts(filterTab = 'all') {
+        let html = '';
+        const filtered = filterTab === 'all' ? designPosts : designPosts.filter(p => p.tab === filterTab);
+        
+        if (filtered.length === 0) {
+          html = '<div style="grid-column:1/-1; text-align:center; padding:3rem; background:rgba(255,255,255,0.5); border-radius:48px;">🌈 no design posts in this category — check back soon.</div>';
+        } else {
+          filtered.forEach(p => {
+            html += `
+              <div class="design-card" data-tab="${p.tab}">
+                <span class="card-badge"><i class="fas fa-tag"></i> ${p.category}</span>
+                <h3>${p.title}</h3>
+                <div class="design-meta">
+                  <span><i class="far fa-clock"></i> ${p.readTime}</span>
+                </div>
+                <p>${p.description}</p>
+                <div class="design-footer">
+                  <span class="tool-tag"><i class="fas fa-cube"></i> ${p.tags[0]}</span>
+                  <span style="color:#ff7b5c;"><i class="fa-regular fa-bookmark"></i> save</span>
+                </div>
+              </div>
+            `;
+          });
+        }
+        grid.innerHTML = html;
+      }
+
+      renderDesignPosts('all');
+
+      // tab click handlers
+      tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          tabs.forEach(t => t.classList.remove('active'));
+          this.classList.add('active');
+          renderDesignPosts(this.dataset.tab);
+        });
+      });
+
+      // search functionality (title / category)
+      const searchInput = document.getElementById('searchDesign');
+      searchInput.addEventListener('keyup', function() {
+        const term = this.value.toLowerCase().trim();
+        const cards = document.querySelectorAll('.design-card');
+        cards.forEach(card => {
+          const title = card.querySelector('h3')?.innerText.toLowerCase() || '';
+          const badge = card.querySelector('.card-badge')?.innerText.toLowerCase() || '';
+          if (title.includes(term) || badge.includes(term) || term === '') {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+
+      // newsletter subscribe
+      document.getElementById('subscribeBtn').addEventListener('click', function() {
+        const email = document.getElementById('newsEmail').value;
+        if (email.includes('@') && email.includes('.')) {
+          alert(`🌈 Welcome to the design digest! (demo: ${email})`);
+          document.getElementById('newsEmail').value = '';
+        } else {
+          alert('✨ please enter a valid email (demo).');
+        }
+      });
+
+      // copy swatch hex on click (demo)
+      const swatches = document.querySelectorAll('.color-swatch');
+      swatches.forEach(swatch => {
+        swatch.addEventListener('click', function() {
+          const hex = this.innerText.trim();
+          navigator.clipboard?.writeText(hex).then(() => {
+            alert(`copied ${hex} to clipboard (demo)`);
+          }).catch(() => alert(`demo: ${hex} clicked`));
+        });
+      });
+
+      // bookmark toggle
+      document.addEventListener('click', function(e) {
+        if (e.target.closest('.fa-bookmark')) {
+          const icon = e.target.closest('.fa-bookmark');
+          e.preventDefault();
+          if (icon.classList.contains('fa-regular')) {
+            icon.classList.remove('fa-regular');
+            icon.classList.add('fa-solid');
+            icon.style.color = '#ff6f61';
+          } else {
+            icon.classList.remove('fa-solid');
+            icon.classList.add('fa-regular');
+            icon.style.color = '';
+          }
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

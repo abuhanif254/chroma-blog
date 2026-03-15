@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>chroma blog · tech</title>
+  <!-- Font Awesome 6 (free) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(145deg, #e8ecff 0%, #f5f0ff 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      color: #1e1e2f;
+      transition: background 0.3s, color 0.2s;
+    }
+
+    /* dark mode class (toggle via JS) */
+    body.dark-mode {
+      background: linear-gradient(145deg, #1a1a2e, #16213e);
+      color: #f0e9ff;
+    }
+    body.dark-mode .navbar,
+    body.dark-mode .card,
+    body.dark-mode .code-card,
+    body.dark-mode .newsletter-row,
+    body.dark-mode .tools-showcase,
+    body.dark-mode .footer {
+      background: rgba(20, 20, 40, 0.8);
+      backdrop-filter: blur(10px);
+      border-color: #4b3b6b;
+      color: #e6d9ff;
+    }
+    body.dark-mode .nav-links a {
+      color: #cfc1ff;
+    }
+    body.dark-mode .nav-links a:hover {
+      color: #ffb8a0;
+    }
+
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: #d6d0ff; border-radius: 20px; }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(145deg, #4f75ff, #b66eff); border-radius: 20px; }
+
+    /* ===== HEADER / NAV ===== */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 6%;
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
+      border-bottom: 3px solid #b9b0ff;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .logo {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #3f5efb, #b966ff, #fc466b);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.5px;
+    }
+    .logo i { color: #5f7cff; background: none; font-size: 1.8rem; margin-right: 6px; }
+
+    .nav-links {
+      display: flex;
+      gap: 2.2rem;
+      flex-wrap: wrap;
+      font-weight: 600;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: #2b2b4b;
+      font-size: 1.1rem;
+      transition: 0.2s;
+      border-bottom: 2px solid transparent;
+      padding-bottom: 4px;
+    }
+    .nav-links a:hover, .nav-links a.active {
+      border-bottom-color: #5f7cff;
+      color: #4f3bff;
+    }
+    .nav-links a.active {
+      border-bottom-color: #5f7cff;
+      color: #4f3bff;
+    }
+    .nav-right {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+    .search-box {
+      background: white;
+      padding: 0.4rem 1rem;
+      border-radius: 60px;
+      display: flex;
+      align-items: center;
+      border: 1px solid #cdb5ff;
+    }
+    .search-box i { color: #6d5cff; margin-right: 6px; }
+    .search-box input {
+      border: none;
+      background: transparent;
+      outline: none;
+      width: 140px;
+      font-size: 1rem;
+    }
+    .theme-toggle {
+      background: white;
+      border: 2px solid #b59eff;
+      border-radius: 40px;
+      padding: 0.5rem 1.2rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.2s;
+    }
+    .theme-toggle:hover {
+      background: #e3daff;
+    }
+
+    /* ===== TECH HERO ===== */
+    .tech-hero {
+      background: linear-gradient(112deg, #acb9ff, #d0a2ff, #9dd6ff);
+      padding: 3.5rem 6%;
+      margin: 2rem 6% 1rem;
+      border-radius: 48px;
+      box-shadow: 0 22px 35px -10px #4f3bff60;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      border: 2px solid rgba(255,255,255,0.8);
+    }
+    .tech-hero h1 {
+      font-size: 3.2rem;
+      font-weight: 800;
+      background: linear-gradient(145deg, #1f0c3e, #4800c7);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .tech-hero p {
+      font-size: 1.2rem;
+      max-width: 550px;
+      margin: 1.5rem 0 0;
+      color: #1c1a3a;
+      font-weight: 500;
+    }
+    .hero-icon {
+      background: rgba(255,255,255,0.5);
+      backdrop-filter: blur(4px);
+      padding: 1rem 2.2rem;
+      border-radius: 100px;
+      font-size: 3rem;
+    }
+
+    /* ===== TECH FILTER PILLS ===== */
+    .tech-filter {
+      margin: 2rem 6% 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+    .filter-pill {
+      background: white;
+      padding: 0.7rem 1.8rem;
+      border-radius: 60px;
+      font-weight: 600;
+      color: #2a1b4b;
+      border: 2px solid #baa8ff;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .filter-pill:hover, .filter-pill.active {
+      background: #7f6eff;
+      border-color: #3600b3;
+      color: white;
+    }
+
+    /* ===== TECH GRID (cards) ===== */
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin: 1rem 6% 2rem;
+    }
+    .tech-card {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      border-radius: 36px;
+      padding: 1.8rem 1.5rem;
+      box-shadow: 0 30px 40px -20px rgba(80, 45, 200, 0.3);
+      transition: 0.25s ease;
+      border: 2px solid rgba(170, 145, 255, 0.6);
+    }
+    .tech-card:hover {
+      transform: translateY(-8px);
+      border-color: #7f6eff;
+    }
+    .card-badge {
+      font-size: 0.85rem;
+      background: #ced5ff;
+      padding: 0.3rem 1rem;
+      border-radius: 40px;
+      display: inline-block;
+      font-weight: 700;
+      color: #3f1e8f;
+    }
+    .tech-card h3 {
+      font-size: 1.9rem;
+      margin: 0.7rem 0 0.5rem;
+      font-weight: 800;
+      color: #12102e;
+    }
+    .tech-meta {
+      color: #5b4b8a;
+      margin: 0.8rem 0;
+    }
+    .tech-card p {
+      color: #282349;
+      margin: 1rem 0 1.5rem;
+    }
+    .tech-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .difficulty {
+      background: #ffe1d0;
+      padding: 0.3rem 1rem;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    /* ===== INTERACTIVE CODE SNIPPET CARD ===== */
+    .code-playground {
+      margin: 2rem 6% 3rem;
+      background: rgba(30, 20, 50, 0.1);
+      backdrop-filter: blur(8px);
+      border-radius: 48px;
+      padding: 2.5rem 3rem;
+      border: 3px solid #c4b0ff;
+    }
+    .code-card {
+      background: #1e1a36;
+      border-radius: 28px;
+      padding: 1.8rem;
+      color: #b9f0ff;
+      font-family: 'Fira Code', monospace;
+      border: 2px solid #9a89ff;
+      margin: 1.5rem 0;
+    }
+    .run-btn {
+      background: #6d5cff;
+      border: none;
+      color: white;
+      padding: 0.8rem 2.5rem;
+      border-radius: 40px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      cursor: pointer;
+      margin-right: 1rem;
+      border: 2px solid white;
+    }
+    .code-output {
+      background: #0e0b1f;
+      padding: 1rem 2rem;
+      border-radius: 60px;
+      color: #aee0ff;
+      font-family: monospace;
+      margin-top: 1rem;
+    }
+
+    /* ===== DEV TOOLS SHOWCASE ===== */
+    .tools-showcase {
+      margin: 3rem 6%;
+      background: rgba(190, 170, 255, 0.25);
+      backdrop-filter: blur(4px);
+      border-radius: 58px;
+      padding: 2.5rem 3rem;
+      border: 2px solid #d5c0ff;
+    }
+    .tools-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+    .tool-item {
+      background: white;
+      padding: 1.5rem 2rem;
+      border-radius: 48px;
+      text-align: center;
+      min-width: 150px;
+      border: 3px solid #b59eff;
+      font-weight: 600;
+    }
+    .tool-item i {
+      font-size: 2.5rem;
+      color: #5f3cff;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    /* ===== NEWSLETTER ===== */
+    .newsletter-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin: 2rem 6% 3rem;
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(4px);
+      border-radius: 56px;
+      padding: 2.5rem 3rem;
+      border: 2px solid #dbbaff;
+    }
+    .input-group {
+      display: flex;
+      flex-wrap: wrap;
+      background: white;
+      border-radius: 60px;
+      align-items: center;
+      padding: 0.2rem 0.2rem 0.2rem 1.5rem;
+      border: 2px solid #dbbaff;
+    }
+    .input-group button {
+      background: linear-gradient(130deg, #6f5cff, #b56eff);
+      border: none;
+      padding: 0.8rem 2rem;
+      border-radius: 60px;
+      font-weight: 700;
+      color: white;
+      cursor: pointer;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      margin-top: 2rem;
+      background: #20203a;
+      color: #f2d9ff;
+      padding: 2rem 6%;
+      border-radius: 48px 48px 0 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer a { color: #ffcba4; margin: 0 8px; font-size: 1.5rem; }
+
+    @media (max-width: 650px) {
+      .tech-hero { flex-direction: column; text-align: center; }
+      .navbar { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="logo"><i class="fas fa-blog"></i> chroma<span style="color:#7f6eff;">tech</span></div>
+      <div class="nav-links">
+        <a href="index.html">home</a>
+        <a href="stories.html">stories</a>
+        <a href="design.html">design</a>
+        <a href="tech.html" class="active">tech</a>
+        <a href="about.html">about</a>
+      </div>
+      <div class="nav-right">
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input type="text" placeholder="search tech..." id="searchTech">
+        </div>
+        <div class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i> dark</div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Tech Hero -->
+    <section class="tech-hero">
+      <div>
+        <h1>code & components<br>developer stories</h1>
+        <p>Tutorials, tool reviews, and engineering deep dives.</p>
+      </div>
+      <div class="hero-icon">
+        <i class="fas fa-code"></i> <i class="fas fa-terminal"></i>
+      </div>
+    </section>
+
+    <!-- filter pills (dynamic) -->
+    <div class="tech-filter" id="techFilter">
+      <span class="filter-pill active" data-filter="all"><i class="fas fa-layer-group"></i> all</span>
+      <span class="filter-pill" data-filter="frontend"><i class="fab fa-react"></i> frontend</span>
+      <span class="filter-pill" data-filter="backend"><i class="fas fa-server"></i> backend</span>
+      <span class="filter-pill" data-filter="devops"><i class="fas fa-cloud"></i> devops</span>
+      <span class="filter-pill" data-filter="ai"><i class="fas fa-brain"></i> AI/ML</span>
+    </div>
+
+    <!-- tech articles grid (JS populated) -->
+    <div class="tech-grid" id="techGrid"></div>
+
+    <!-- interactive code playground (active feature) -->
+    <section class="code-playground">
+      <h2 style="color:#312a5a;"><i class="fas fa-laptop-code"></i> live code lab (javascript)</h2>
+      <div class="code-card">
+        <pre style="margin:0;">function greet(name) {<br>  return `Hello, ${name}!`;<br>}<br>console.log(greet('chroma dev'));</pre>
+      </div>
+      <button class="run-btn" id="runCodeBtn"><i class="fas fa-play"></i> run snippet</button>
+      <span style="font-weight:500;"> → output:</span>
+      <div class="code-output" id="codeOutput">Hello, chroma dev!</div>
+      <p style="margin-top:1rem;"><i class="fas fa-edit"></i> (try editing in console – interactive demo)</p>
+    </section>
+
+    <!-- dev tools showcase -->
+    <div class="tools-showcase">
+      <h2 style="color:#281f4b;"><i class="fas fa-tools"></i> essential dev tools</h2>
+      <div class="tools-grid">
+        <div class="tool-item"><i class="fab fa-github"></i> GitHub</div>
+        <div class="tool-item"><i class="fas fa-code"></i> VS Code</div>
+        <div class="tool-item"><i class="fas fa-docker"></i> Docker</div>
+        <div class="tool-item"><i class="fas fa-cloud"></i> AWS</div>
+        <div class="tool-item"><i class="fas fa-robot"></i> Copilot</div>
+      </div>
+    </div>
+
+    <!-- newsletter -->
+    <div class="newsletter-row">
+      <div style="flex:2;">
+        <h2 style="font-size:2rem;"><i class="fas fa-newspaper"></i> weekly dev byte</h2>
+        <p>code snippets, new releases & tech news</p>
+        <div class="input-group">
+          <i class="fas fa-envelope" style="margin-left:1rem; color:#6d5cff;"></i>
+          <input type="email" placeholder="your email" id="techNewsEmail" style="border:none; padding:0.9rem; flex:1; outline:none; background:transparent;">
+          <button id="techSubscribeBtn"><i class="fas fa-paper-plane"></i> subscribe</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <span>© 2025 chromalog — tech stack</span>
+    <span>
+      <a href="#"><i class="fab fa-twitter"></i></a>
+      <a href="#"><i class="fab fa-github"></i></a>
+      <a href="#"><i class="fab fa-dev"></i></a>
+    </span>
+  </footer>
+
+  <script>
+    (function() {
+      // ----- TECH POSTS DATA -----
+      const techPosts = [
+        {
+          title: "React server components",
+          category: "frontend",
+          readTime: "9 min",
+          desc: "Understanding the new architecture and when to use it.",
+          level: "intermediate",
+          filter: "frontend"
+        },
+        {
+          title: "Docker for beginners",
+          category: "devops",
+          readTime: "7 min",
+          desc: "Containerize your first app with this step-by-step.",
+          level: "beginner",
+          filter: "devops"
+        },
+        {
+          title: "Python async/await",
+          category: "backend",
+          readTime: "10 min",
+          desc: "Writing concurrent Python with asyncio.",
+          level: "advanced",
+          filter: "backend"
+        },
+        {
+          title: "Prompt engineering 101",
+          category: "ai",
+          readTime: "6 min",
+          desc: "Getting better results from LLMs.",
+          level: "beginner",
+          filter: "ai"
+        },
+        {
+          title: "Vue 3 composition api",
+          category: "frontend",
+          readTime: "8 min",
+          desc: "Reactive patterns and reusable logic.",
+          level: "intermediate",
+          filter: "frontend"
+        },
+        {
+          title: "Kubernetes basics",
+          category: "devops",
+          readTime: "12 min",
+          desc: "Orchestration made simple.",
+          level: "intermediate",
+          filter: "devops"
+        }
+      ];
+
+      const grid = document.getElementById('techGrid');
+      const filterPills = document.querySelectorAll('.filter-pill');
+      
+      function renderTech(filter = 'all') {
+        let html = '';
+        const filtered = filter === 'all' ? techPosts : techPosts.filter(p => p.filter === filter);
+        
+        if (filtered.length === 0) {
+          html = '<div style="grid-column:1/-1; text-align:center; padding:3rem; background:rgba(255,255,255,0.5); border-radius:48px;">⚡ no tech posts in this category – stay tuned.</div>';
+        } else {
+          filtered.forEach(p => {
+            html += `
+              <div class="tech-card" data-category="${p.filter}">
+                <span class="card-badge"><i class="fas fa-microchip"></i> ${p.category}</span>
+                <h3>${p.title}</h3>
+                <div class="tech-meta"><i class="far fa-clock"></i> ${p.readTime}</div>
+                <p>${p.desc}</p>
+                <div class="tech-footer">
+                  <span class="difficulty">${p.level}</span>
+                  <span style="color:#6d5cff;"><i class="fa-regular fa-bookmark"></i> read later</span>
+                </div>
+              </div>
+            `;
+          });
+        }
+        grid.innerHTML = html;
+      }
+      renderTech('all');
+
+      // filter click handlers
+      filterPills.forEach(pill => {
+        pill.addEventListener('click', function() {
+          filterPills.forEach(p => p.classList.remove('active'));
+          this.classList.add('active');
+          renderTech(this.dataset.filter);
+        });
+      });
+
+      // search functionality
+      const searchInput = document.getElementById('searchTech');
+      searchInput.addEventListener('keyup', function() {
+        const term = this.value.toLowerCase().trim();
+        const cards = document.querySelectorAll('.tech-card');
+        cards.forEach(card => {
+          const title = card.querySelector('h3')?.innerText.toLowerCase() || '';
+          const desc = card.querySelector('p')?.innerText.toLowerCase() || '';
+          if (title.includes(term) || desc.includes(term) || term === '') {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+
+      // dark mode toggle
+      const themeToggle = document.getElementById('themeToggle');
+      themeToggle.addEventListener('click', function() {
+        document.body.classList.toggle('dark-mode');
+        if (document.body.classList.contains('dark-mode')) {
+          themeToggle.innerHTML = '<i class="fas fa-sun"></i> light';
+        } else {
+          themeToggle.innerHTML = '<i class="fas fa-moon"></i> dark';
+        }
+      });
+
+      // interactive code runner (demo)
+      document.getElementById('runCodeBtn').addEventListener('click', function() {
+        const outputDiv = document.getElementById('codeOutput');
+        // simulate code execution (just for demo)
+        const names = ['chroma dev', 'visitor', 'coder', 'pixel artist'];
+        const randomName = names[Math.floor(Math.random() * names.length)];
+        outputDiv.innerText = `Hello, ${randomName}! (demo output)`;
+      });
+
+      // newsletter subscribe
+      document.getElementById('techSubscribeBtn').addEventListener('click', function() {
+        const email = document.getElementById('techNewsEmail').value;
+        if (email.includes('@') && email.includes('.')) {
+          alert(`💾 Subscribed! Tech news will arrive at ${email} (demo)`);
+          document.getElementById('techNewsEmail').value = '';
+        } else {
+          alert('⚙️ please enter a valid email (demo).');
+        }
+      });
+
+      // bookmark toggle (read later)
+      document.addEventListener('click', function(e) {
+        const bookmark = e.target.closest('.fa-bookmark');
+        if (bookmark) {
+          e.preventDefault();
+          if (bookmark.classList.contains('fa-regular')) {
+            bookmark.classList.remove('fa-regular');
+            bookmark.classList.add('fa-solid');
+            bookmark.style.color = '#6d5cff';
+          } else {
+            bookmark.classList.remove('fa-solid');
+            bookmark.classList.add('fa-regular');
+            bookmark.style.color = '';
+          }
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
