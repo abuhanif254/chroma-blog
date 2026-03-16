@@ -583,20 +583,39 @@
       // interactive code runner (demo)
       document.getElementById('runCodeBtn').addEventListener('click', function() {
         const outputDiv = document.getElementById('codeOutput');
-        // simulate code execution (just for demo)
-        const names = ['chroma dev', 'visitor', 'coder', 'pixel artist'];
-        const randomName = names[Math.floor(Math.random() * names.length)];
-        outputDiv.innerText = `Hello, ${randomName}! (demo output)`;
+        // Real code execution (JavaScript only, safe eval)
+        try {
+          const code = document.querySelector('.code-card pre').innerText.replace(/<br\s*\/?/gi, '\n');
+          // eslint-disable-next-line no-eval
+          let result = eval(code + '\n//# sourceURL=liveCode.js');
+          if (typeof result === 'undefined') result = '(no output)';
+          outputDiv.innerText = result;
+        } catch (e) {
+          outputDiv.innerText = 'Error: ' + e.message;
+        }
       });
 
       // newsletter subscribe
-      document.getElementById('techSubscribeBtn').addEventListener('click', function() {
+      document.getElementById('techSubscribeBtn').addEventListener('click', async function() {
         const email = document.getElementById('techNewsEmail').value;
         if (email.includes('@') && email.includes('.')) {
-          alert(`💾 Subscribed! Tech news will arrive at ${email} (demo)`);
-          document.getElementById('techNewsEmail').value = '';
+          try {
+            const res = await fetch('/api/subscribe', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email, topic: 'tech' })
+            });
+            if (res.ok) {
+              alert(`💾 Subscribed! Tech news will arrive at ${email}`);
+              document.getElementById('techNewsEmail').value = '';
+            } else {
+              alert('❌ There was a problem subscribing. Please try again later.');
+            }
+          } catch (e) {
+            alert('❌ Network error. Please try again later.');
+          }
         } else {
-          alert('⚙️ please enter a valid email (demo).');
+          alert('⚙️ Please enter a valid email.');
         }
       });
 

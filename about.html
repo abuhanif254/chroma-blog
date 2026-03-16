@@ -367,11 +367,11 @@
     <nav class="navbar">
       <div class="logo"><i class="fas fa-blog"></i> chroma<span style="color:#ff8555;">log</span></div>
       <div class="nav-links">
-        <a href="#">home</a>
-        <a href="#">stories</a>
-        <a href="#">design</a>
-        <a href="#">tech</a>
-        <a href="#" class="active">about</a>
+        <a href="index.html">home</a>
+        <a href="stories.html">stories</a>
+        <a href="design.html">design</a>
+        <a href="tech.html">tech</a>
+        <a href="about.html" class="active">about</a>
       </div>
     </nav>
   </header>
@@ -552,51 +552,45 @@
       });
 
       // ----- CONTACT FORM (demo alert) -----
-      document.getElementById('contactBtn').addEventListener('click', function() {
+      document.getElementById('contactBtn').addEventListener('click', async function() {
         const name = document.getElementById('contactName').value.trim();
         const email = document.getElementById('contactEmail').value.trim();
         const message = document.getElementById('contactMessage').value.trim();
-        
         if (!name || !email || !message) {
-          alert('🌈 please fill in all fields (demo)');
+          alert('🌈 Please fill in all fields.');
           return;
         }
         if (!email.includes('@') || !email.includes('.')) {
-          alert('✨ enter a valid email address');
+          alert('✨ Enter a valid email address.');
           return;
         }
-        alert(`💌 thanks ${name}! we'll reply soon (demo simulation).`);
-        // clear form
-        document.getElementById('contactName').value = '';
-        document.getElementById('contactEmail').value = '';
-        document.getElementById('contactMessage').value = '';
+        try {
+          const res = await fetch('/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, message })
+          });
+          if (res.ok) {
+            alert(`💌 Thanks ${name}! We'll reply soon.`);
+            document.getElementById('contactName').value = '';
+            document.getElementById('contactEmail').value = '';
+            document.getElementById('contactMessage').value = '';
+          } else {
+            alert('❌ There was a problem sending your message. Please try again later.');
+          }
+        } catch (e) {
+          alert('❌ Network error. Please try again later.');
+        }
       });
 
       // ----- TIMELINE SMOOTH SCROLL (optional) - not necessary but adds polish -----
       // (already scrollable)
 
       // ----- optional: team social links demo (prevent navigation) -----
-      document.querySelectorAll('.team-social a').forEach(link => {
-        link.addEventListener('click', (e) => {
-          e.preventDefault();
-          alert('🔗 social link (demo)');
-        });
-      });
+      // Team social links: allow real navigation (no demo alert)
 
       // ----- nav links demo (keep within page) -----
-      document.querySelectorAll('.nav-links a').forEach(link => {
-        link.addEventListener('click', (e) => {
-          e.preventDefault();
-          // just for demo, show active state
-          document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-          link.classList.add('active');
-          if (link.innerText.toLowerCase().includes('about')) {
-            // already on about
-          } else {
-            alert(`🌐 navigating to ${link.innerText} page (demo)`);
-          }
-        });
-      });
+      // Nav links: allow real navigation (remove demo alert and active state simulation)
     })();
   </script>
 </body>

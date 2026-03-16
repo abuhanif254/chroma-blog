@@ -569,13 +569,26 @@
       });
 
       // newsletter subscribe
-      document.getElementById('subscribeBtn').addEventListener('click', function() {
+      document.getElementById('subscribeBtn').addEventListener('click', async function() {
         const email = document.getElementById('newsEmail').value;
         if (email.includes('@') && email.includes('.')) {
-          alert(`🌈 Welcome to the design digest! (demo: ${email})`);
-          document.getElementById('newsEmail').value = '';
+          try {
+            const res = await fetch('/api/subscribe', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email, topic: 'design' })
+            });
+            if (res.ok) {
+              alert(`🌈 Welcome to the design digest!`);
+              document.getElementById('newsEmail').value = '';
+            } else {
+              alert('❌ There was a problem subscribing. Please try again later.');
+            }
+          } catch (e) {
+            alert('❌ Network error. Please try again later.');
+          }
         } else {
-          alert('✨ please enter a valid email (demo).');
+          alert('✨ Please enter a valid email.');
         }
       });
 
@@ -585,8 +598,8 @@
         swatch.addEventListener('click', function() {
           const hex = this.innerText.trim();
           navigator.clipboard?.writeText(hex).then(() => {
-            alert(`copied ${hex} to clipboard (demo)`);
-          }).catch(() => alert(`demo: ${hex} clicked`));
+            alert(`Copied ${hex} to clipboard!`);
+          }).catch(() => alert(`Could not copy ${hex}. Please copy manually.`));
         });
       });
 
